@@ -1,0 +1,22 @@
+[
+  {
+    "hostname": "controller-01",
+    "role": "controller",
+    "az": "az1",
+    "mgmt_ip": "10.10.1.11",
+    "storage_ip": "10.20.1.11",
+    "tenant_ip": "10.30.1.11",
+    "environment": "prod",
+    "status": "active"
+  },
+  {
+    "hostname": "compute-az1-01",
+    "role": "compute",
+    "az": "az1",
+    "mgmt_ip": "10.10.2.11",
+    "storage_ip": "10.20.2.11",
+    "tenant_ip": "10.30.2.11",
+    "environment": "prod",
+    "status": "active"
+  }
+]

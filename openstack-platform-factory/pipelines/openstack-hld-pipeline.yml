@@ -1,0 +1,31 @@
+stages:
+  - validate
+  - import-inventory
+  - generate
+  - plan
+  - deploy
+  - test
+  - publish
+
+validate-hld:
+  stage: validate
+  script:
+    - python generators/validate_hld.py
+
+import-cmdb:
+  stage: import-inventory
+  script:
+    - python generators/fetch_cmdb_inventory.py
+
+validate-cmdb:
+  stage: import-inventory
+  script:
+    - python generators/validate_cmdb_vs_hld.py
+
+generate:
+  stage: generate
+  script:
+    - python generators/generate_ansible_inventory.py
+    - python generators/generate_terraform.py
+    - python generators/generate_docs.py
+    - python generators/generate_diagrams.py

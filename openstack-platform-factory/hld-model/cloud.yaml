@@ -1,0 +1,66 @@
+cloud_name: prod-private-cloud
+region: regionOne
+
+availability_zones:
+  - az1
+  - az2
+  - az3
+
+control_plane:
+  nodes: 3
+  vip: 10.10.0.10
+  ha:
+    lb: haproxy
+    vip_manager: keepalived
+    db: mariadb-galera
+    mq: rabbitmq-cluster
+
+compute:
+  hypervisor: kvm
+  nodes:
+    az1: 4
+    az2: 4
+    az3: 4
+
+network:
+  backend: ovn
+  provider_networks:
+    - name: physnet1
+      type: vlan
+      vlan_range: 100-300
+  tenant_networks:
+    type: geneve
+  gateway_nodes:
+    az1: 2
+    az2: 2
+    az3: 2
+
+storage:
+  backend: ceph
+  mons: 3
+  mgrs: 2
+  osds_per_node: 8
+  replication: 3
+
+load_balancing:
+  platform_api:
+    type: haproxy_vip
+    vip: 10.10.0.10
+  tenant_lbaas:
+    service: octavia
+    provider: amphora
+
+tenant_example:
+  name: web-platform
+  instances:
+    - name: web-01
+      az: az1
+    - name: web-02
+      az: az2
+    - name: web-03
+      az: az3
+  load_balancer:
+    protocol: HTTPS
+    port: 443
+    algorithm: ROUND_ROBIN
+    health_monitor: HTTP
