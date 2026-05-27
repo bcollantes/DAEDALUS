@@ -209,6 +209,119 @@ Deployment Pipelines
 
 ---
 
+# Roadmap
+
+## Architecture Engineering
+
+- Advanced HLD validation
+- Automated HLD → LLD transformation
+- Cross-platform architecture consistency
+- Multi-region and Disaster Recovery modeling
+- Architecture governance as code
+- Policy-driven architecture validation
+
+---
+
+## Platform Engineering
+
+- GitOps integration
+- Kubernetes platform generation
+- Observability generation
+- FinOps validation and optimization
+- Automated operational runbooks
+- SRE-oriented platform validation
+
+---
+
+## Identity & Zero Trust Integration
+
+DAEDALUS is designed to integrate with identity governance and Zero Trust ecosystems such as AEGIS Identity Fabric.
+
+Future capabilities include:
+
+- Identity-aware architecture generation
+- Federation-aware HLD/LLD models
+- Automated IAM/RBAC artifact generation
+- Zero Trust validation
+- Privileged access integration
+- Identity governance validation
+- Multi-cloud identity consistency
+
+---
+
+## Planned Identity Integrations
+
+### OpenStack
+
+- Keystone federation
+- OIDC/SAML integration
+- RBAC mapping generation
+- Service identity generation
+- Policy generation
+
+---
+
+### Azure
+
+- Managed Identity generation
+- RBAC assignments
+- Conditional Access integration
+- PIM integration
+- Private access validation
+
+---
+
+### AWS
+
+- IAM Role generation
+- Trust relationship generation
+- SCP integration
+- Federated access mappings
+- Permission boundary generation
+
+---
+
+### GCP
+
+- IAM policy generation
+- Workload identity integration
+- Organization policy integration
+- Service account governance
+- Federation mappings
+
+---
+
+## Governance & Compliance
+
+- Architecture compliance validation
+- Security baseline enforcement
+- CIS benchmark validation
+- Zero Trust architecture validation
+- Immutable audit integration
+- CMDB consistency validation
+
+---
+
+## Hybrid & Physical Infrastructure
+
+- Physical datacenter modeling
+- Network fabric modeling
+- Firewall policy generation
+- Load balancer topology generation
+- Hybrid cloud topology generation
+
+---
+
+## Long-Term Vision
+
+DAEDALUS aims to evolve into a complete multi-cloud architecture engineering and platform orchestration framework capable of:
+
+- Transforming declarative architecture models into validated implementations
+- Standardizing platform engineering workflows
+- Integrating infrastructure, identity and governance
+- Enforcing architecture consistency across hybrid and multi-cloud environments
+- Enabling Architecture as Code and Governance as Code paradigms
+
 # Current Status
 
 Work in progress.
