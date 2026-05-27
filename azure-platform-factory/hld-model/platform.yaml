@@ -1,0 +1,51 @@
+platform_name: enterprise-azure
+
+regions:
+  primary: westeurope
+  secondary: northeurope
+
+network:
+  topology: hub-spoke
+
+  hub:
+    cidr: 10.0.0.0/16
+
+  spokes:
+    - name: app
+      cidr: 10.1.0.0/16
+
+    - name: data
+      cidr: 10.2.0.0/16
+
+security:
+  firewall: true
+  bastion: true
+  private_endpoints: true
+
+aks:
+  enabled: true
+
+  clusters:
+    - name: prod-aks
+      private_cluster: true
+
+      node_pools:
+        - name: system
+          size: Standard_DS2_v2
+          count: 3
+
+        - name: workloads
+          size: Standard_B4ms
+          count: 5
+
+observability:
+  monitor: true
+  log_analytics: true
+
+governance:
+  policies:
+    - deny-public-ip
+    - require-tags
+
+costs:
+  monthly_budget: 5000
