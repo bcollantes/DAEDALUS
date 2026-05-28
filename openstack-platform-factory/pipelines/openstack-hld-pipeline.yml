@@ -1,31 +1,62 @@
+# openstack-hld-pipeline.yml
+
 stages:
   - validate
   - import-inventory
+  - validate-inventory
   - generate
   - plan
-  - deploy
-  - test
   - publish
+
+variables:
+  HLD_MODEL: "hld-model/cloud.yaml"
+  CMDB_RAW_INVENTORY: "inventory/raw/cmdb_nodes.json"
+  GENERATED_INVENTORY: "inventory/generated/inventory.ini"
 
 validate-hld:
   stage: validate
   script:
-    - python generators/validate_hld.py
+    - python generators/hld/validate_hld.py --model ${HLD_MODEL}
 
 import-cmdb:
   stage: import-inventory
   script:
-    - python generators/fetch_cmdb_inventory.py
+    - python generators/hld/fetch_cmdb_inventory.py --output ${CMDB_RAW_INVENTORY}
+  artifacts:
+    paths:
+      - inventory/raw/cmdb_nodes.json
 
-validate-cmdb:
-  stage: import-inventory
+validate-cmdb-vs-hld:
+  stage: validate-inventory
   script:
-    - python generators/validate_cmdb_vs_hld.py
+    - python generators/hld/validate_cmdb_vs_hld.py --model ${HLD_MODEL} --inventory ${CMDB_RAW_INVENTORY}
 
-generate:
+generate-hld-artifacts:
   stage: generate
   script:
-    - python generators/generate_ansible_inventory.py
-    - python generators/generate_terraform.py
-    - python generators/generate_docs.py
-    - python generators/generate_diagrams.py
+    - python generators/hld/generate_lld_skeleton.py --model ${HLD_MODEL} --inventory ${CMDB_RAW_INVENTORY}
+    - python generators/hld/generate_docs.py --model ${HLD_MODEL}
+    - python generators/hld/generate_diagrams.py --model ${HLD_MODEL}
+  artifacts:
+    paths:
+      - lld-model/
+      - docs/hld/
+      - diagrams/hld/
+
+plan-hld:
+  stage: plan
+  script:
+    - python generators/hld/plan_architecture_changes.py --model ${HLD_MODEL}
+  artifacts:
+    paths:
+      - reports/
+
+publish-hld:
+  stage: publish
+  script:
+    - echo "Publishing HLD documentation and architecture artifacts"
+  artifacts:
+    paths:
+      - docs/hld/
+      - diagrams/hld/
+      - reports/
