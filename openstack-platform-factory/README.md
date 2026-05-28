@@ -1,35 +1,88 @@
 # OpenStack Platform Factory
 
-Declarative High Level Design (HLD) generation, infrastructure automation, documentation, diagrams and deployment pipeline for production-grade OpenStack private clouds.
+Production-grade OpenStack architecture engineering and platform orchestration framework.
+
+Part of the EAGIS ecosystem.
 
 ---
 
 # Overview
 
-OpenStack Platform Factory transforms a declarative architecture model into:
+The OpenStack Platform Factory transforms declarative High-Level Design (HLD) models, inventory data and technical requirements into validated Low-Level Designs (LLDs), deployment artifacts, operational templates and governance controls for OpenStack-based private cloud environments.
 
-- Infrastructure as Code (Terraform)
-- Configuration management (Ansible)
-- Architecture documentation
-- Network and platform diagrams
-- Validation rules
-- CI/CD deployment pipelines
-
-The goal is to eliminate static documentation and convert the HLD into a living, versioned and deployable architecture definition.
+The project follows an Architecture as Code approach where architecture becomes the primary source of truth for platform deployment, validation and operations.
 
 ---
 
-# Architecture Philosophy
+# Core Philosophy
 
-The platform follows several principles:
+The platform separates:
 
-- Declarative architecture
-- Infrastructure as Code
-- Immutable documentation
-- Automated validation
-- Production-ready HA patterns
-- Multi-AZ design
-- GitOps-friendly workflows
+## HLD (High-Level Design)
+
+Defines architectural intent:
+
+* Multi-AZ strategy
+* High Availability
+* Networking topology
+* Storage architecture
+* Security segmentation
+* Identity integration
+* Resiliency requirements
+* Governance constraints
+
+The HLD describes:
+
+> What the platform should be.
+
+---
+
+## LLD (Low-Level Design)
+
+Defines implementation details:
+
+* OpenStack services
+* OVN/Neutron configuration
+* Ceph topology
+* HAProxy configuration
+* RabbitMQ clustering
+* Galera topology
+* VLAN/VXLAN definitions
+* Ansible inventories
+* Terraform artifacts
+
+The LLD describes:
+
+> How the platform is implemented.
+
+---
+
+# Architecture Workflow
+
+```text
+Declarative HLD
+        │
+        ▼
+Inventory / CMDB
+        │
+        ▼
+Requirements & Constraints
+        │
+        ▼
+Architecture Validation
+        │
+        ▼
+HLD → LLD Transformation
+        │
+        ▼
+Deployment Artifacts
+        │
+        ▼
+Governance & Identity Validation
+        │
+        ▼
+Platform Deployment
+```
 
 ---
 
@@ -39,237 +92,121 @@ The platform follows several principles:
 openstack-platform-factory/
 │
 ├── hld-model/
-│   └── cloud.yaml
+├── lld-model/
 │
 ├── generators/
-│   ├── generate_terraform.py
-│   ├── generate_docs.py
-│   ├── generate_diagrams.py
-│   ├── generate_ansible_inventory.py
-│   └── validate_hld.py
+│   ├── hld/
+│   └── lld/
 │
 ├── terraform/
-│   ├── main.tf
-│   ├── networks.tf
-│   ├── compute.tf
-│   ├── octavia.tf
-│   └── outputs.tf
-│
 ├── ansible/
-│   ├── site.yml
-│   ├── inventory.ini
-│   ├── group_vars/
-│   └── roles/
+├── inventory/
+│   ├── raw/
+│   └── generated/
 │
 ├── diagrams/
-│   ├── architecture.py
-│   ├── openstack-ha.mmd
-│   ├── network-topology.mmd
-│   └── tenant-lb.mmd
+│   ├── hld/
+│   └── lld/
 │
 ├── docs/
-│   ├── index.md
-│   ├── architecture.md
-│   ├── networking.md
-│   ├── high-availability.md
-│   ├── storage.md
-│   ├── load-balancing.md
-│   └── operations.md
+│   ├── hld/
+│   └── lld/
 │
 ├── tests/
-│   ├── test_hld_schema.py
-│   ├── test_ha_rules.py
-│   └── test_network_rules.py
 │
-└── .gitlab-ci.yml
+└── pipelines/
+    ├── openstack-hld-pipeline.yml
+    ├── openstack-lld-pipeline.yml
+    └── aegis-deployment-pipeline.yml
 ```
 
 ---
 
-# Declarative HLD Model
-
-The entire platform is driven by a single declarative YAML file:
-
-```yaml
-cloud_name: prod-private-cloud
-region: regionOne
-
-availability_zones:
-  - az1
-  - az2
-  - az3
-
-control_plane:
-  nodes: 3
-  vip: 10.10.0.10
-
-compute:
-  hypervisor: kvm
-  nodes:
-    az1: 4
-    az2: 4
-    az3: 4
-
-network:
-  backend: ovn
-
-storage:
-  backend: ceph
-  replication: 3
-```
-
-This file becomes the single source of truth for:
-
-- Architecture
-- Deployment
-- Documentation
-- Validation
-- Operations
-
----
-
-# Supported Components
+# Supported Architecture Components
 
 ## OpenStack Services
 
-- Nova
-- Neutron
-- Glance
-- Cinder
-- Keystone
-- Octavia
-- Placement
-- Horizon
+* Nova
+* Neutron
+* Keystone
+* Glance
+* Cinder
+* Placement
+* Horizon
+* Octavia
+
+---
 
 ## Networking
 
-- OVN
-- VXLAN / Geneve
-- VLAN provider networks
-- Distributed virtual routing
+* OVN
+* VXLAN / Geneve
+* Provider Networks
+* VLAN segmentation
+* Distributed routing
+* Multi-AZ networking
+
+---
 
 ## Storage
 
-- Ceph
-- Replicated storage
-- Cinder backend integration
+* Ceph
+* Replicated storage
+* Distributed storage
+* Cinder backend integration
+
+---
 
 ## High Availability
 
-- HAProxy
-- Keepalived
-- MariaDB Galera
-- RabbitMQ clustering
+* HAProxy
+* Keepalived
+* Galera Cluster
+* RabbitMQ Cluster
+* Multi-controller deployments
 
 ---
 
-# Generators
+# CMDB Integration
 
-## Terraform Generator
+The platform supports inventory-driven architecture validation through CMDB integration.
 
-Generates:
+The CMDB is treated as:
 
-- Networks
-- Subnets
-- Routers
-- Security groups
-- Tenant workloads
-- Load balancers
+> Source of truth for inventory and operational assets.
 
-Output:
+The HLD remains:
+
+> Source of truth for architecture.
+
+DAEDALUS validates consistency between both layers before deployment.
+
+---
+
+# Pipeline Model
+
+## HLD Pipelines
+
+Responsible for:
+
+* Architecture validation
+* Inventory consistency
+* Governance checks
+* HLD → LLD transformation
+* Architecture compliance validation
+
+Example:
 
 ```text
-terraform/
+openstack-hld-pipeline
 ```
 
----
-
-## Documentation Generator
-
-Generates:
-
-- Architecture documentation
-- HA design
-- Networking design
-- Storage topology
-- Operational procedures
-
-Output:
-
-```text
-docs/
-```
-
----
-
-## Diagram Generator
-
-Generates:
-
-- Mermaid diagrams
-- Network topology
-- HA architecture
-- Tenant load balancing diagrams
-
-Output:
-
-```text
-diagrams/
-```
-
----
-
-## Ansible Inventory Generator
-
-Generates dynamic inventories based on:
-
-- Availability zones
-- Compute nodes
-- Controllers
-- Storage nodes
-
-Output:
-
-```text
-ansible/inventory.ini
-```
-
----
-
-## HLD Validation
-
-Validation examples:
-
-- Minimum controller count
-- Ceph replication rules
-- AZ consistency
-- Network segmentation
-- HA requirements
-
----
-
-# Production Reference Architecture
-
-The default reference architecture includes:
-
-- 3 Controller nodes
-- Multi-AZ compute
-- OVN networking
-- Ceph backend
-- HAProxy + Keepalived
-- Galera cluster
-- RabbitMQ cluster
-- Octavia load balancing
-
----
-
-# CI/CD Pipeline
-
-Pipeline stages:
+Stages:
 
 ```yaml
 stages:
   - validate
+  - import-inventory
   - generate
   - plan
   - deploy
@@ -279,105 +216,91 @@ stages:
 
 ---
 
-# Deployment Workflow
+## LLD Pipelines
+
+Responsible for:
+
+* Platform-specific implementation
+* Configuration rendering
+* Deployment artifacts
+* Integration testing
+* Operational validation
+
+Example:
 
 ```text
-cloud.yaml
-    ↓
-
-Validation
-    ↓
-
-Artifact Generation
-    ↓
-
-Terraform Plan
-    ↓
-
-Ansible Deployment
-    ↓
-
-Smoke Tests
-    ↓
-
-Documentation Publish
+openstack-lld-pipeline
 ```
 
 ---
 
-# Example Generated Artifacts
+## Identity & Governance Pipelines
 
-## Generated Terraform
+Responsible for:
 
-```hcl
-resource "openstack_networking_network_v2" "provider" {
-  name = "physnet1"
-}
+* Identity-aware integration
+* Federation configuration
+* RBAC mapping
+* Zero Trust validation
+* Governance enforcement
+
+Example:
+
+```text
+aegis-deployment-pipeline
 ```
 
 ---
 
-## Generated Mermaid Diagram
+# Identity & Zero Trust Integration
 
-```mermaid
-flowchart TB
+The OpenStack Platform Factory is designed to integrate with AEGIS Identity Fabric.
 
-VIP[API VIP]
+Future capabilities include:
 
-CTRL1[controller-01]
-CTRL2[controller-02]
-CTRL3[controller-03]
-
-VIP --> CTRL1
-VIP --> CTRL2
-VIP --> CTRL3
-```
+* Keystone federation
+* OIDC integration
+* RBAC mapping generation
+* Service identity generation
+* Zero Trust validation
+* Privileged access integration
+* Immutable audit integration
 
 ---
 
-# Goals
+# Design Principles
 
-- Eliminate static architecture documentation
-- Reduce deployment inconsistencies
-- Improve reproducibility
-- Enable platform engineering workflows
-- Standardize private cloud deployments
-- Simplify operational onboarding
-
----
-
-# Future Roadmap
-
-- Kubernetes integration
-- GitOps workflows
-- FinOps validation
-- Multi-region deployment
-- Disaster Recovery automation
-- Observability generation
-- Zero Trust networking
-- Policy as Code
+* Architecture as Code
+* Governance as Code
+* Declarative platform modeling
+* Identity-aware infrastructure
+* Production-grade HA
+* Multi-cloud alignment
+* Operational reproducibility
+* Validation-first deployment
 
 ---
 
-# Technologies
+# Long-Term Vision
 
-- OpenStack
-- Terraform
-- Ansible
-- Python
-- Mermaid
-- MkDocs
-- GitLab CI/CD
+The OpenStack Platform Factory aims to evolve toward a fully architecture-driven private cloud engineering framework capable of:
 
----
+* Automating HLD → LLD transformation
+* Enforcing architectural governance
+* Integrating infrastructure and identity
+* Standardizing OpenStack deployments
+* Validating operational readiness before production
 
-# License
-
-MIT
 ---
 
 # Status
 
 Work in progress.
 
-Experimental platform engineering framework for production-grade OpenStack environments.
+Experimental platform engineering and architecture automation framework for OpenStack private clouds.
+
+---
+
+# License
+
+MIT
