@@ -213,3 +213,98 @@ DAEDALUS and AEGIS consider production readiness as a combination of:
 Production is not only a deployment state.
 
 Production is an operational governance state.
+
+## IAT & ARGOS Integration
+
+The runbook layer is designed to integrate with ARGOS autonomous operations and IAT (Infrastructure Automation Tasks) workflows.
+
+In DAEDALUS and AEGIS, operational procedures are not considered static documentation.
+
+Operational procedures are treated as:
+
+> Executable operational governance artifacts.
+
+This enables:
+
+* Automated operational validation
+* Autonomous remediation workflows
+* Topology-aware recovery procedures
+* Policy-driven operational execution
+* Identity-aware operational controls
+* Closed-loop operational governance
+
+---
+
+# ARGOS Operational Model
+
+ARGOS extends the operational lifecycle by introducing:
+
+```text id="v8z2bq"
+Observability
+    ↓
+Detection
+    ↓
+Reasoning
+    ↓
+Remediation
+    ↓
+Verification
+```
+
+The runbook layer acts as the operational knowledge source used by ARGOS to execute and validate operational workflows.
+
+---
+
+# Infrastructure Automation Tasks (IAT)
+
+IAT workflows represent executable operational procedures derived from:
+
+* HLD models
+* LLD models
+* IAM/PAM governance
+* Runbook definitions
+* Compliance policies
+
+Examples:
+
+* Node recovery workflows
+* OpenStack service remediation
+* Identity recovery procedures
+* DR failover automation
+* Certificate rotation
+* Ceph recovery tasks
+* PAM emergency access workflows
+
+---
+
+# Operational Governance Principle
+
+In the DAEDALUS / AEGIS / ARGOS ecosystem:
+
+```text id="g5f7j6"
+No Runbook → No Production
+No Automation → No Operational Readiness
+```
+
+Production readiness requires:
+
+* Architecture validation
+* Identity validation
+* Governance validation
+* Operational procedure validation
+* Recovery validation
+* Autonomous operational capability
+
+---
+
+# Long-Term Vision
+
+The ecosystem evolves toward:
+
+* Autonomous operational governance
+* AI-assisted remediation
+* Self-validating infrastructures
+* Identity-aware autonomous operations
+* Governance-driven remediation
+* Policy-aware infrastructure automation
+* Closed-loop operational control planes
